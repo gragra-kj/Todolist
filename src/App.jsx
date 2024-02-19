@@ -1,9 +1,20 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./style.css"
 import { NewToDoForm } from "./NewTodoForm"
 import { Todolist } from "./Todolist"
+
 export default function App(){
-  const [todos,settodos]=useState([])
+  const [todos, settodos] = useState(() => {
+    const localValue = localStorage.getItem("ITEMS")
+    if (localValue == null) return []
+
+    return JSON.parse(localValue)
+  })
+
+  useEffect(() => {
+    localStorage.setItem("ITEMS", JSON.stringify(todos))
+  }, [todos])
+
 
   function toggleTodo(id,completed){
     settodos(currentTodos=>{
@@ -19,7 +30,7 @@ export default function App(){
     settodos(currentTodos =>{
       return [
         ...currentTodos,
-        {id:crypto.randomUUID(),title:newItem,completed:false
+        {id:crypto.randomUUID(),title,completed:false
 
         },
       ]
@@ -35,10 +46,10 @@ export default function App(){
 
   return (
     <>
-    <NewToDoForm onSubmit={addTodo}/>
+      <NewToDoForm onSubmit={addTodo}/>
 
       <h1 className="header">Todo List</h1>
-      <Todolist todos={todos}/>
+      <Todolist todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo}/>
 
 
 
