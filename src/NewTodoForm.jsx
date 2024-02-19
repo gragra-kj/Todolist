@@ -1,17 +1,16 @@
 import { useState } from "react"
-export function NewToDoForm(){
+export function NewToDoForm(props){
+    props.onSubmit
     const [newItem,setNewItem]=useState("")
     function handleSubmit(e){
         e.preventDefault()
+        if(newItem ==="")return
 
-        settodos(currentTodos =>{
-          return [
-            ...currentTodos,
-            {id:crypto.randomUUID(),title:newItem,completed:false
 
-            },
-          ]
-        })
+        props.onSubmit(newItem)
+
+
+
 
         // settodos([...todos,{id:crypto.randomUUID(),title:newItem,completed:false},
         // ])
